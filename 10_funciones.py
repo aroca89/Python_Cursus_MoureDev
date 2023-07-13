@@ -53,6 +53,7 @@ print_texts ("hola", "python", "aroca-pa")
 
 print("\nCaso 6:")
 def print_upper_texts (*texts): # Funcion con parametros arbitrarios
+    print(type(texts)) # Comprobamos el tipo de dato tambien vemos una manera de debugear nuestro codigo 
     for text in texts:
         print (text.upper()) # Podemos aplicar funciones del sistema para consegir quenos lo devuelva como queremos
 
