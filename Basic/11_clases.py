@@ -36,13 +36,21 @@ print("\nEjemplo 3 funcion dentro de la clase")
 """ Una funcion dentro de una clase no tiene que llamar al nombre de su clase sino a self para acceder atodo lo que este guardado ya que ya esta dentro"""
 class Person:
     def __init__(self, name, surname, alias = ""):
-        self.full_name = f"{name} {surname} {alias}"
+        self.full_name = f"{name} {surname} {alias}" # Propiedad publica podemos acceder y modificarla
+        self.__name = name # De esta manera hacemos que la propiedad se ha privada
+        self.__surnaem = surname # las propiedades privadas no las podemos modificar, se puede aceder atraves de  la funcion my_person.get_mame() 
+        # Una buena practica seria que todas las propiedades fuesen privadas 
+        
+    def get_name (self):
+        return self.__name 
     
     def walk (self):
         print(f"{self.full_name} Esta caminando")
 
 my_person = Person("Aritz", "Roca", "aroca-pa")
 print(my_person.full_name)
+#print(my_person.__name) #No nos deja acceder por que es privada
+#print(my_person.get_name()) # Podemos verla pero no modificarla
 my_person.walk ()
 
 print("\nejemplo 3.1 sin alias y cambiando el valor")
