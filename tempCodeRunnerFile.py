@@ -1,0 +1,1 @@
+print("Mi condicion es 15")
