@@ -22,3 +22,9 @@ print(my_list)
 
 my_list = [i * i for i in range(9)]
 print(my_list)
+
+def sum_five(number):
+    return number + 5
+
+my_list = [sum_five(i) for i in ranga(9)] #Utilizamos una funcion para modificar el valor antes de guardarlo
+print(my_list)
