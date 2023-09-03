@@ -31,11 +31,59 @@ print(txt_file.readline())
 
 txt_file.close()
 
-#os.remove("Intermediate/my_file.txt")
+os.remove("Intermediate/my_file.txt") 
 
 # .json file
 
 import json
 
-json.
+json_file = open("Intermediate/my_file.json", "w+")
+
+json_test ={
+    "name":"Aritz",
+    "surname":"Roca",
+    "age":"35",
+    "language":["Python", "Swift", "Kotlin"],
+    "website":"https://aroca-pa.pa"}
+
+json.dump(json_test, json_file, indent= 4)
+
+json_file.close()
+
+with open("Intermediate/my_file.json") as my_other_file:
+    for line in my_other_file.readlines():
+        print(line)
+
+json_dict = json.load(open("Intermediate/my_file.json"))
+print(json_dict)
+print(type(json_dict))
+
+os.remove("Intermediate/my_file.json") 
+
+# .csv file
+
+import csv
+
+csv_file = open("Intermediate/my_file.csv", "w+")
+
+csv_write = csv.writer(csv_file)
+csv_write.writerow(["Name", "Surname", "Age", "Language", "Website"])
+csv_write.writerow(["Aritz", "Roca", 34, "Python", "https://aroca-pa.pa"])
+csv_write.writerow(["Roswell", "", 2, "Cobol", ""])
+
+csv_file.close()
+
+with open("Intermediate/my_file.csv") as my_other_file:
+    for line in my_other_file.readlines():
+        print(line)
+
+os.remove("Intermediate/my_file.csv")
+
+# .xlsx file
+
+#import xlrd # Debe instalarse el módulo
+
+# .xml file
+
+import xml
 
