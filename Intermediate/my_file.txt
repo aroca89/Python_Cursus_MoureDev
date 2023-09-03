@@ -1,0 +1,5 @@
+Mi nombre es Aritz
+Mi apellido es Roca
+34 años
+y mi lenguaje preferido es python
+Aunque también me gusta Kotlin

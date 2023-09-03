@@ -31,7 +31,7 @@ print(txt_file.readline())
 
 txt_file.close()
 
-os.remove("Intermediate/my_file.txt") 
+#os.remove("Intermediate/my_file.txt") 
 
 # .json file
 
