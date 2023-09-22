@@ -1,6 +1,7 @@
 ### Users API###
 
 from fastapi import FastAPI, Query
+from httpx import delete
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -54,10 +55,36 @@ async def user(user: User):
 			return {"error": "El usuario ya existe"}
 		else:
 			users_list.append(user)
+		return user
 
 @app.put("/user/")
 async def user(user: User):
-	if type()
+
+	found = False
+
+	for index, saved_user in enumerate(users_list):
+		if saved_user.id == user.id:
+			users_list[index] = user
+			found = True
+
+	if not found:
+		return {"Error": "No he a actualizado el usuario"}
+	else:
+		return user
+	
+@app.delete("/user/{id}")
+async def user(id: int):
+
+	found = False
+
+	for index, saved_user in enumerate(users_list):
+		if saved_user.id == id:
+			del users_list[index]
+			found = True
+
+		if not found:
+			return {"Error": "No he a actualizado el usuario"}
+	
 
 def search_user(id: int):
 	users = filter(lambda user: user.id == id, users_list)
