@@ -1,10 +1,10 @@
 ### Users API###
 
-from fastapi import FastAPI, Query
+from fastapi import APIRouter, FastAPI, HTTPException, Query
 from httpx import delete
 from pydantic import BaseModel
 
-app = FastAPI()
+router = APIRouter()
 
 #  Inicia el server: uvicorn users:app --reload
 
@@ -19,17 +19,17 @@ users_list = [User(id= 1, name= "Aritz", surname= "Roca", url= "https://aroca.de
 			  User(id= 2, name= "Miriam", surname= "Guti", url= "https://miri.dev", age= "31"),
 			  User(id= 3, name= "Joel", surname= "Saiz", url= "https://joel.dev", age=  "19"),]
 
-@app.get("/usersjson")
+@router.get("/usersjson")
 async def usersjson():
 	return [{"name": "Aritz", "surname": "Roca", "url": "https://aroca.dev", "age":"33"},
 		 	{"name": "Miriam", "surname": "Guti", "url": "https://miri.dev", "age":"31"},
 		 	{"name": "Joel", "surname": "Saiz", "url": "https://joel.dev", "age":"19"},]
 
-@app.get("/users")
+@router.get("/users")
 async def users():
 	return users_list
 
-@app.get("/user/{id}")
+@router.get("/user/{id}")
 async def user(id: int):
 	users = filter(lambda user: user.id == id, users_list)
 	try:
@@ -39,25 +39,25 @@ async def user(id: int):
 
 # Path
 
-@app.get("/user/{id}")
+@router.get("/user/{id}")
 async def user(id: int):
 	return search_user(id)
 
 # Query
 
-@app.get("/user/")
+@router.get("/user/")
 async def user(id: int):
 	return search_user(id)
 	
-@app.post("/user/")
+@router.post("/user/",status_code=201)
 async def user(user: User):
-		if type(search_user(user.id)) == User:
-			return {"error": "El usuario ya existe"}
-		else:
-			users_list.append(user)
-		return user
+	if type(search_user(user.id)) == User:
+		raise HTTPException(status_code=404, detail="El usuario ya exite")
+		
+	users_list.append(user)
+	return user
 
-@app.put("/user/")
+@router.put("/user/")
 async def user(user: User):
 
 	found = False
@@ -72,7 +72,7 @@ async def user(user: User):
 	else:
 		return user
 	
-@app.delete("/user/{id}")
+@router.delete("/user/{id}")
 async def user(id: int):
 
 	found = False
@@ -82,8 +82,8 @@ async def user(id: int):
 			del users_list[index]
 			found = True
 
-		if not found:
-			return {"Error": "No he a actualizado el usuario"}
+	if not found:
+		return {"Error": "No he a actualizado el usuario"}
 	
 
 def search_user(id: int):
