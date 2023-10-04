@@ -33,9 +33,14 @@ users_db = {
 	},
 }
 
+def search_user_db(username: str):
+	if username in users_db:
+		return UserDB(**users_db[username])
+	
 def search_user(username: str):
 	if username in users_db:
-		return UserDB(users_db[username])
+		return User(**users_db[username])
+
 
 async def current_user(token: str = Depends(oauth2)):
 	user = search_user(token)
@@ -43,6 +48,11 @@ async def current_user(token: str = Depends(oauth2)):
 		raise HTTPException(
 			status_code=status.HTTP_401_UNAUTHORIZED , 
 			detail="Credenciales de autenticación inválidas", 
+			headers={"WWW-Authenticate": "bearer"},)
+	if user.disabled:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST , 
+			detail="Usuario inactivo", 
 			headers={"WWW-Authenticate": "bearer"},)
 	
 @app.post("/login")
@@ -52,7 +62,8 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 		raise HTTPException(
 			status_code=status.HTTP_400_BAD_REQUEST, 
 			detail="El usuario no es correcto",)
-	user = search_user(form.username)
+	
+	user = search_user_db(form.username)
 	if not form.password == user.password:
 		raise HTTPException(
 			status_code=status.HTTP_400_BAD_REQUEST, 
