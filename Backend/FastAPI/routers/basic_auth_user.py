@@ -1,3 +1,5 @@
+### Users API con autorización OAuth2 básica ###
+
 from fastapi  import FastAPI, Depends, HTTPException, status
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -18,17 +20,17 @@ class UserDB(User):
 
 users_db = {
 	"aroca-pa": {
-		"username": "aroca-pa",
+		"username": "arocapa",
 		"full_name": "Aritz Roca",
 		"email": "arocapazos@gmail.com",
-		"disable": False,
+		"disabled": False,
 		"password": "123456"
 	},
 	"migutier": {
 		"username": "migutier",
 		"full_name": "Miriam Gutierrez",
 		"email": "migutierrez1991@gmail.com",
-		"disable": True,
+		"disabled": True,
 		"password": "654321"
 	},
 }
@@ -52,8 +54,7 @@ async def current_user(token: str = Depends(oauth2)):
 	if user.disabled:
 		raise HTTPException(
 			status_code=status.HTTP_400_BAD_REQUEST , 
-			detail="Usuario inactivo", 
-			headers={"WWW-Authenticate": "bearer"},)
+			detail="Usuario inactivo",)
 	
 @app.post("/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
